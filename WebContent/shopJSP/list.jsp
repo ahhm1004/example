@@ -1,8 +1,6 @@
 <%@page import="common.page.PagingBean"%>
 <%@page import="common.file.FileManager"%>
 <%@page import="com.shoppingmall.product.model.Product"%>
-<%@page import="com.shoppingmall.product.model.PanelSize"%>
-<%@page import="com.shoppingmall.product.model.Nation"%>
 <%@page import="com.shoppingmall.product.model.Brand"%>
 <%@page import="com.shoppingmall.product.model.TopCategory"%>
 <%@page import="java.util.List"%>

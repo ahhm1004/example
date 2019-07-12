@@ -84,7 +84,7 @@ app.get('/insert', function(request, response){
 
 app.post('/insert', function(request, response){
 	var body=request.body;
-	client.query('INSERT INTO shop_table (name, price, nation)VALUES(?,?,?)',[body.name,body.price,body.nation],function(){
+	client.query('INSERT INTO shop_table (name, price)VALUES(?,?)',[body.name,body.price],function(){
 		response.redirect('/');
 	});
 });
@@ -101,8 +101,8 @@ app.get('/edit/:id', function(request, response){
 
 app.post('/edit/:id', function(request, response){
 	var body = request.body;
-	client.query('UPDATE shop_table SET name=?, price=?, nation=? WHERE shop_id=?',
-		[body.name, body.price, body.nation, request.param('id')],function(){
+	client.query('UPDATE shop_table SET name=?, price=? WHERE shop_id=?',
+		[body.name, body.price, request.param('id')],function(){
 	});
 	response.redirect('/');
 });

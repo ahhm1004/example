@@ -13,7 +13,6 @@ public class Product {
 	private int price;
 	private int discount;
 	private int point;
-	private int stock;
 	private String filename;
 	private String detail;
 	private String regdate;
@@ -22,9 +21,6 @@ public class Product {
 	private String topcategory_name;
 	private int brand_id;
 	private String brand_name;
-	private int nation_id;
-	private String nation_name;
-	private ArrayList<PanelSize> panelSize;
 	MultipartFile myFile;
 	
 	public String getSubcategory_name() {
@@ -54,9 +50,7 @@ public class Product {
 	public int getPoint() {
 		return point;
 	}
-	public int getStock() {
-		return stock;
-	}
+
 	public String getFilename() {
 		return filename;
 	}
@@ -74,15 +68,6 @@ public class Product {
 	}
 	public String getBrand_name() {
 		return brand_name;
-	}
-	public int getNation_id() {
-		return nation_id;
-	}
-	public String getNation_name() {
-		return nation_name;
-	}
-	public ArrayList<PanelSize> getPanelSize() {
-		return panelSize;
 	}
 	public MultipartFile getMyFile() {
 		return myFile;
@@ -102,9 +87,6 @@ public class Product {
 	public void setPoint(int point) {
 		this.point = point;
 	}
-	public void setStock(int stock) {
-		this.stock = stock;
-	}
 	public void setFilename(String filename) {
 		this.filename = filename;
 	}
@@ -122,15 +104,6 @@ public class Product {
 	}
 	public void setBrand_name(String brand_name) {
 		this.brand_name = brand_name;
-	}
-	public void setNation_id(int nation_id) {
-		this.nation_id = nation_id;
-	}
-	public void setNation_name(String nation_name) {
-		this.nation_name = nation_name;
-	}
-	public void setPanelSize(ArrayList<PanelSize> panelSize) {
-		this.panelSize = panelSize;
 	}
 	public void setMyFile(MultipartFile myFile) {
 		this.myFile = myFile;

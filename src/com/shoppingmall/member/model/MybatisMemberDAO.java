@@ -24,7 +24,6 @@ public class MybatisMemberDAO implements MemberDAO {
 		// TODO Auto-generated method stub
 
 		int result = sqlSessionTemplate.insert("Member.insert", member);
-		System.out.println(tag + "¸¶ÀÌ¹ÙÆ¼½º" + result);
 
 	}
 
@@ -34,7 +33,7 @@ public class MybatisMemberDAO implements MemberDAO {
 		List list = sqlSessionTemplate.selectList("Member.selectId", member);
 
 		if (list.size() != 0) {
-			throw new DidNotCheckLoginException("ÀÌ¹Ì ¾ÆÀÌµğ°¡ ÀÖ½À´Ï´Ù!");
+			throw new DidNotCheckLoginException("ì´ë¯¸ ì•„ì´ë””ê°€ ìˆìŠµë‹ˆë‹¤!");
 		}
 		return list;
 	}
@@ -44,9 +43,8 @@ public class MybatisMemberDAO implements MemberDAO {
 
 		List list = sqlSessionTemplate.selectList("Member.checkLogin", member);
 		System.out.println(list);
-		System.out.println(tag + "000"+list.size());
 		if (list.size() == 0) {
-			throw new DidNotCheckLoginException("·Î±×ÀÎ ¾ÆÀÌµğ ºñ¹Ğ¹øÈ£¸¦ È®ÀÎÇÏ¼¼¿ä");
+			throw new DidNotCheckLoginException("ë¡œê·¸ì¸ ì•„ì´ë”” ë¹„ë°€ë²ˆí˜¸ë¥¼ í™•ì¸í•˜ì„¸ìš”");
 		}else{
 			Member getMember=(Member)list.get(0);
 			member.setId(getMember.getId());
@@ -55,11 +53,9 @@ public class MybatisMemberDAO implements MemberDAO {
 		return 0;
 	}
 
-	//³»Á¤º¸°¡Á®¿À±â
 	@Override
 	public Member selectOne(String id) {
 		System.out.println("id="+id);
-		/*Member member=(Member)sqlSessionTemplate.selectMap("Member.selectOne", member1);*/
 		Member member=sqlSessionTemplate.selectOne("Member.selectOne", id);
 		return member;
 	}

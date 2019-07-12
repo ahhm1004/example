@@ -46,7 +46,6 @@ public class MemberServiceImpl implements MemberService {
 		return result;
 	}
 	
-	//내정보가져오기
 	@Override
 	public Member selectOne(String id) {
 		Member member=memberDAO.selectOne(id);

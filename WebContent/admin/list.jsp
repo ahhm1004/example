@@ -1,8 +1,6 @@
 <%@page import="common.page.PagingBean"%>
 <%@page import="common.file.FileManager"%>
 <%@page import="com.shoppingmall.product.model.Product"%>
-<%@page import="com.shoppingmall.product.model.PanelSize"%>
-<%@page import="com.shoppingmall.product.model.Nation"%>
 <%@page import="com.shoppingmall.product.model.Brand"%>
 <%@page import="com.shoppingmall.product.model.TopCategory"%>
 <%@page import="java.util.List"%>
@@ -96,8 +94,6 @@
 						<th>이미지</th>
 						<th>상품명</th>
 						<th>브랜드</th>
-						<th>제조국가</th>
-						<th>화면크기</th>
 						<th>가격</th>
 						<th>할인가</th>
 						<th>포인트</th>
@@ -124,42 +120,9 @@
 						<td><img src="/data/<%=product.getProduct_id()%>_thumb.<%=FileManager.getExtend(product.getFilename())%>"></td>
 						<td><%=product.getProduct_name() %></td>
 						<td><%=product.getBrand_name() %></td>
-						<td><%=product.getNation_name() %></td>
-						<td><a href="#myModal" data-toggle="modal">화면크기</a></td>
-						<!-- 모달정의 -->
-						<div id="myModal" class="modal fade" role="dialog">
-							<div class="modal-dialog">
-							<!-- Modal content-->
-								<div class="modal-content">
-									<div class="modal-header">
-										<button type="button" class="close" data-dismiss="modal">&times;</button>
-										<h4 class="modal-title">화면크기</h4>
-									</div>
-									<div class="modal-body">
-										<p>
-											<%List<PanelSize> pList = product.getPanelSize(); %>
-											<%for(int j = 0; j < pList.size(); j++){ %>
-												<%PanelSize psize = pList.get(j); %>
-												<%if(j < pList.size()-1){ %>
-													<%=psize.getName()+", "%>
-												<%}else{ %>
-													<%=psize.getName()%>
-												<%} %>
-												
-											<%} %>							
-										</p>
-									</div>
-									<div class="modal-footer">
-										<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
-									</div>
-								</div>
-							
-							</div>
-						</div>
 						<td><%=product.getPrice() %></td>
 						<td><%=product.getDiscount() %></td>
 						<td><%=product.getPoint() %></td>
-						<td><%=product.getStock() %></td>
 						<td><%=(product.getRegdate()).substring(0, 10) %></td>
 					</tr>
 					<%} %>

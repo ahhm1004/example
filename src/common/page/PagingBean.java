@@ -11,7 +11,7 @@ public class PagingBean {
 	private int curPos;
 	private int num;
 	
-	public void init(int currentPage, int totalRecord, int pageSize, int blockSize){	// 게시물이 변경될때마다 초기화
+	public void init(int currentPage, int totalRecord, int pageSize, int blockSize) {
 		
 		this.currentPage = currentPage;
 		this.totalRecord = totalRecord;

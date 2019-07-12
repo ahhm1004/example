@@ -29,8 +29,6 @@ import com.shoppingmall.product.model.NationDAO;
 import com.shoppingmall.product.model.PanelSizeDAO;
 import com.shoppingmall.product.model.Product;
 import com.shoppingmall.product.model.ProductDAO;
-import com.shoppingmall.product.model.ProductSize;
-import com.shoppingmall.product.model.ProductSizeDAO;
 import com.shoppingmall.product.model.SubCategoryDAO;
 import com.shoppingmall.product.model.TopCategoryDAO;
 
@@ -54,10 +52,6 @@ public class AdminServiceImpl implements AdminService{
 	private NationDAO nationDAO;
 	
 	@Autowired
-	@Qualifier("panelSizeDAOImpl")
-	private PanelSizeDAO panelSizeDAO;
-	
-	@Autowired
 	@Qualifier("subCategoryDAOImpl")
 	private SubCategoryDAO subCategoryDAO;
 	
@@ -68,11 +62,7 @@ public class AdminServiceImpl implements AdminService{
 	@Autowired
 	@Qualifier("productDAOImpl")
 	private ProductDAO productDAO;
-	
-	@Autowired
-	@Qualifier("productSizeDAOImpl")
-	private ProductSizeDAO productSizeDAO;
-	
+		
 	@Autowired
 	@Qualifier("eventInfoDAOImpl")
 	private EventInfoDAO eventInfoDAO;
@@ -95,12 +85,11 @@ public class AdminServiceImpl implements AdminService{
 		
 		Admin result = adminDAO.select(admin);
 		if(result == null){
-			throw new DoNotLoginException("¾ÆÀÌµð,ÆÐ½º¿öµå¸¦ È®ÀÎÇØÁÖ¼¼¿ä.");
+			throw new DoNotLoginException("ï¿½ï¿½ï¿½Ìµï¿½,ï¿½Ð½ï¿½ï¿½ï¿½ï¿½å¸¦ È®ï¿½ï¿½ï¿½ï¿½ï¿½Ö¼ï¿½ï¿½ï¿½.");
 		}
 		session.setAttribute("admin", result);
 	}
 	
-	/* ·Î±×¾Æ¿ô */
 	@Override
 	public void logout(HttpSession session) {
 		
@@ -115,20 +104,12 @@ public class AdminServiceImpl implements AdminService{
 		List brandList = brandDAO.selectAll();
 		allList.put("brandList", brandList);
 		
-		List nationList = nationDAO.selectAll();
-		allList.put("nationList", nationList);
-		
-		List panelSizeList = panelSizeDAO.selectAll();
-		allList.put("panelSizeList", panelSizeList);
-		
 		List topCategoryList = topCategoryDAO.selectAll();
 		allList.put("topCategoryList", topCategoryList);
 		
 		return allList;
 	}
 
-
-	/* ¼­ºêÄ«Å×°í¸® ¾ò¾î¿À±â!! */
 	public List getSubCategory(int topCategory_id) {
 		
 		List subCategoryList = subCategoryDAO.selectAll(topCategory_id);
@@ -136,42 +117,26 @@ public class AdminServiceImpl implements AdminService{
 		return subCategoryList;
 	}
 	
-	
-	/* »óÇ° µî·ÏÇÏ±â */
 	@Override
-	public void insert(Product product, String[] panelsize_id, HttpServletRequest request) {
+	public void insert(Product product, HttpServletRequest request) {
 		
 		
 		File temp = null;
-		// ÆÄÀÏ¾÷·Îµå
-		MultipartFile myFile = product.getMyFile();	// ³Ñ°Ü¹ÞÀº ÆÄÀÏ °´Ã¼ ÃßÃâ.
+		MultipartFile myFile = product.getMyFile();	
 		
-		String realname = myFile.getOriginalFilename(); // ³Ñ°Ü¹ÞÀº ÆÄÀÏÀÇ ÆÄÀÏÀÌ¸§ ÃßÃâ.
+		String realname = myFile.getOriginalFilename();
 		String savePath = request.getServletContext().getRealPath("/data/");
 		
 		String ext = FileManager.getExtend(realname);
 		
-		// DB ³Ö±â.
 		product.setFilename(realname);
 		int product_id = productDAO.insert(product);
-		
-		
-		for(int i = 0; i < panelsize_id.length; i++){
-			ProductSize productSize = new ProductSize();
-			productSize.setProduct_id(product_id);
-			productSize.setPanelsize_id(Integer.parseInt(panelsize_id[i]));
-			
-			productSizeDAO.insert(productSize);
-		}
-		
-		
-		
+				
+				
 		String fullname = savePath+product_id+"."+ext;
 		
 		try {
-			// ³Ñ°Ü¹ÞÀº ÆÄÀÏ ¼­¹ö¿¡ ÀúÀå.
 			myFile.transferTo(temp = new File(fullname));
-			// ½æ³×ÀÏ
 			FileManager.makeThumb(temp, savePath, realname, product_id);
 		} catch (IllegalStateException e) {
 			e.printStackTrace();
@@ -180,7 +145,7 @@ public class AdminServiceImpl implements AdminService{
 		}
 		
 	}
-	// ÀüÃ¼ »óÇ°
+
 	@Override
 	public List<Product> selectAll(String keyword) {
 		
@@ -189,15 +154,7 @@ public class AdminServiceImpl implements AdminService{
 		return list;
 	}
 	
-/*	@Override
-	public List selectAll() {
-		
-		List list = productDAO.selectAll();
-		
-		return list;
-	}*/
-	
-	// ÀÌº¥Æ® Á¤º¸ °¡Á®¿À±â
+
 	@Override
 	public List eventAll() {
 		
@@ -206,17 +163,14 @@ public class AdminServiceImpl implements AdminService{
 		return list;
 	}
 	
-	/* »óÇ°»èÁ¦ */
 	@Override
 	public void productDelete(String[] product_id, String[] filename, HttpServletRequest request) {
 		String path = request.getServletContext().getRealPath("/data/");
 		for(int i = 0; i < product_id.length; i++){
-			// »óÇ°»èÁ¦
+
 			productDAO.delete(Integer.parseInt(product_id[i]));
-			// ÇØ´ç»óÇ° »çÀÌÁî »èÁ¦
-			productSizeDAO.delete(Integer.parseInt(product_id[i]));
 			
-			// »çÁø»èÁ¦
+
 			File file = new File(path+product_id[i]+"."+FileManager.getExtend(filename[i]));
 			File thumbFile = new File(path+product_id[i]+"_thumb."+FileManager.getExtend(filename[i]));
 			file.delete();
@@ -225,7 +179,6 @@ public class AdminServiceImpl implements AdminService{
 		
 	}
 	
-	/* ÀÌº¥Æ®µî·Ï */
 	@Override
 	public void eventRegist(String[] product_id, String eventinfo_id) {
 		
@@ -235,7 +188,6 @@ public class AdminServiceImpl implements AdminService{
 		}
 	}
 	
-	/* ÀÌº¥Æ®Á¤·Ä */
 	@Override
 	public List eventSelect(int eventinfo_id) {
 		
@@ -262,7 +214,6 @@ public class AdminServiceImpl implements AdminService{
 		
 	}
 	
-	// ÀÌº¥Æ® Áßº¹°Ë»ç
 	@Override
 	public List duplicateEvent(String[] product_id, int eventinfo_id) {
 		
@@ -290,7 +241,6 @@ public class AdminServiceImpl implements AdminService{
 		return productList;
 	}
 	
-	// È¸¿ø ÀüÃ¼ ºÒ·¯¿À±â
 	@Override
 	public List allMember() {
 		
@@ -299,7 +249,6 @@ public class AdminServiceImpl implements AdminService{
 		return list;
 	}
 	
-	// °øÁö»çÇ× ÀÔ·Â
 	@Override
 	public void noticeWrite(Notice notice) {
 		
@@ -307,7 +256,6 @@ public class AdminServiceImpl implements AdminService{
 		
 	}
 	
-	// °øÁö»çÇ× ÀüÃ¼ ºÒ·¯¿À±â
 	@Override
 	public List noticeAll() {
 		
@@ -316,7 +264,6 @@ public class AdminServiceImpl implements AdminService{
 		return list;
 	}
 	
-	// °øÁö»çÇ× ¼öÁ¤ÇÏ±â
 	@Override
 	public void noticeUpdate(Notice notice) {
 		
@@ -324,7 +271,6 @@ public class AdminServiceImpl implements AdminService{
 		
 	}
 	
-	// °øÁö»çÇ× »ó¼¼º¸±â
 	@Override
 	public Notice noticeOne(int notice_id) {
 		
@@ -334,7 +280,6 @@ public class AdminServiceImpl implements AdminService{
 		return notice;
 	}
 	
-	// °øÁö»çÇ× Áö¿ì±â
 	@Override
 	public void noticeDelete(int notice_id) {
 		
@@ -343,35 +288,27 @@ public class AdminServiceImpl implements AdminService{
 	}
 
 	@Override
-	public void productModify(Product product, String[] panelsize_id, HttpServletRequest request) {
+	public void productModify(Product product, HttpServletRequest request) {
 		
 		File temp = null;
-		// ÆÄÀÏ¾÷·Îµå
-		MultipartFile myFile = product.getMyFile();	// ³Ñ°Ü¹ÞÀº ÆÄÀÏ °´Ã¼ ÃßÃâ.
+
+		MultipartFile myFile = product.getMyFile();	// ï¿½Ñ°Ü¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ã¼ ï¿½ï¿½ï¿½ï¿½.
 		
-		String realname = myFile.getOriginalFilename(); // ³Ñ°Ü¹ÞÀº ÆÄÀÏÀÇ ÆÄÀÏÀÌ¸§ ÃßÃâ.
+		String realname = myFile.getOriginalFilename(); // ï¿½Ñ°Ü¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ì¸ï¿½ ï¿½ï¿½ï¿½ï¿½.
 		String savePath = request.getServletContext().getRealPath("/data/");
 		
 		String ext = FileManager.getExtend(realname);
 		
-		// DB ³Ö±â.
+
 		product.setFilename(realname);
 		int product_id = productDAO.productModify(product);
-		
-		for(int i = 0; i < panelsize_id.length; i++){
-			ProductSize productSize = new ProductSize();
-			productSize.setProduct_id(product_id);
-			productSize.setPanelsize_id(Integer.parseInt(panelsize_id[i]));
-			
-			productSizeDAO.update(productSize);
-		}
 		
 		String fullname = savePath+product_id+"."+ext;
 		
 		try {
-			// ³Ñ°Ü¹ÞÀº ÆÄÀÏ ¼­¹ö¿¡ ÀúÀå.
+
 			myFile.transferTo(temp = new File(fullname));
-			// ½æ³×ÀÏ
+
 			FileManager.makeThumb(temp, savePath, realname, product_id);
 		} catch (IllegalStateException e) {
 			e.printStackTrace();
@@ -395,11 +332,11 @@ public class AdminServiceImpl implements AdminService{
 		return mlist;
 	}
 	
-	/* È¸¿ø Á¤º¸ »èÁ¦ */
+
 	@Override
 	public void memberDelete(String[] member_id) {
 		for(int i = 0; i < member_id.length; i++){
-			// »óÇ°»èÁ¦
+
 			memberDAO.delete(Integer.parseInt(member_id[i]));
 		}	
 	}
@@ -415,12 +352,6 @@ public class AdminServiceImpl implements AdminService{
 		memberDAO.memberModify(member);
 
 	}	
-	
-/*	@Override
-	public List<Product> listAll(String keyword) throws Exception
-	{
-		return productDAO.listAll(keyword);
-	}*/
 	
 	@Override
 	public int countArticle(String keyword) throws Exception

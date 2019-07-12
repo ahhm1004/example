@@ -1,5 +1,3 @@
-<%@page import="com.shoppingmall.product.model.PanelSize"%>
-<%@page import="com.shoppingmall.product.model.Nation"%>
 <%@page import="com.shoppingmall.product.model.Brand"%>
 <%@page import="com.shoppingmall.product.model.TopCategory"%>
 <%@page import="java.util.List"%>
@@ -7,11 +5,8 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%
 	Map allList = (Map)request.getAttribute("allList");
-	
 	List<TopCategory> topCategoryList = (List)allList.get("topCategoryList");
 	List<Brand> brandList = (List)allList.get("brandList");
-	List<Nation> nationList = (List)allList.get("nationList");
-	List<PanelSize> panelSizeList = (List)allList.get("panelSizeList");
 %>
 <!DOCTYPE html>
 <html>
@@ -66,25 +61,11 @@
 			}else if(registForm.brand_id.value == 0){
 				alert("브랜드를 선택해주세요.");
 				return;
-			}else if(registForm.nation_id.value == 0){
-				alert("원산지를 선택해주세요.");
-				return;
 			}else if(registForm.myFile.value==""){
 				alert("이미지를 첨부해주세요.");
 				return;
 			}
 			
-			var sizeCount = 0;
-			for(var i = 0; i < registForm.panelsize_id.length; i++){
-				if(registForm.panelsize_id[i].checked){
-					sizeCount++;
-				}
-			}
-
-			if(sizeCount == 0){
-				alert("화면크기를 선택해주세요.");
-				return;
-			}
 			
 			
 			// 숫자만 입력 여부 검사.
@@ -113,10 +94,8 @@
 			var point = registForm.point.value;
 			var pointFlag = notNumber(point, registForm.point);
 			
-			var stock = registForm.stock.value;
-			var stockFlag = notNumber(stock, registForm.stock);
 			
-			if(priceFlag || discountFlag || pointFlag || stockFlag){
+			if(priceFlag || discountFlag || pointFlag){
 				notNumFlag = true;
 			}
 			
@@ -179,7 +158,6 @@
 				<div class="col-sm-10">
 					<select id="sub" class="form-control" name="subcategory_id">
 						<option value="0">선택하세요</option>
-						<!-- <option value="sub.value">sub.text</option> -->
 					</select>
 				</div>
 			</div>
@@ -202,27 +180,6 @@
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="col-sm-2 control-label">원산지</label>
-				<div class="col-sm-10">
-					<select id="nation_id" class="form-control" name="nation_id">
-						<option value="0">선택하세요</option>
-						<%for(int i = 0; i < nationList.size(); i++){ %>
-						<% Nation nation = nationList.get(i); %>
-							<option value="<%=nation.getNation_id()%>"><%=nation.getName() %></option>
-						<%} %>
-					</select>
-				</div>
-			</div>
-			<div class="form-group">
-				<label class="col-sm-2 control-label">화면크기</label>
-				<div class="col-sm-10">
-					<%for(int i = 0; i < panelSizeList.size(); i++){ %>
-						<% PanelSize panelSize = panelSizeList.get(i); %>
-							<label class="checkbox-inline"><input type="checkbox" value="<%=panelSize.getPanelsize_id() %>" name="panelsize_id"><%=panelSize.getName() %></label>
-					<%} %>
-				</div>
-			</div>
-			<div class="form-group">
 				<label class="col-sm-2 control-label">가격</label>
 				<div class="col-sm-10">
 					<input class="form-control" name="price" type="number" placeholder="숫자만 입력해주세요." min="0">
@@ -238,12 +195,6 @@
 				<label class="col-sm-2 control-label">포인트</label>
 				<div class="col-sm-10">
 					<input class="form-control" name="point" type="number" placeholder="숫자만 입력해주세요." min="0">
-				</div>
-			</div>
-			<div class="form-group">
-				<label class="col-sm-2 control-label">재고량</label>
-				<div class="col-sm-10">
-					<input class="form-control" name="stock" type="number" placeholder="숫자만 입력해주세요." min="0">
 				</div>
 			</div>
 			<div class="form-group">

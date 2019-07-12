@@ -29,7 +29,6 @@ import com.shoppingmall.product.model.TopCategory;
 import common.exception.DoNotLoginException;
 import common.page.PagingBean;
 
-/* °ü¸®ÀÚ ÆäÀÌÁö °ü·Ã ÄÁÆ®·Ñ·¯ */
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
@@ -40,7 +39,7 @@ public class AdminController {
 	@Qualifier("adminServiceImpl")
 	private AdminService adminService;
 	
-	/* °ü¸®ÀÚ ·Î±×ÀÎ */
+	/* ë¡œê·¸ì¸ ê¸°ëŠ¥ */
 	@RequestMapping("/login.do")
 	public String login(Admin admin, HttpSession session){
 		
@@ -49,7 +48,7 @@ public class AdminController {
 		return "redirect:/admin/regist.do";
 	}
 	
-	/* °ü¸®ÀÚ ·Î±×¾Æ¿ô */
+	/* ë¡œê·¸ì•„ì›ƒ ê¸°ëŠ¥ */
 	@RequestMapping("/logout.do")
 	public String logout(HttpSession session){
 		
@@ -58,8 +57,7 @@ public class AdminController {
 		return "redirect:/admin/index.jsp";
 	}
 	
-	
-	/* »óÇ°µî·ÏÆäÀÌÁö */
+	/* ìƒí’ˆë“±ë¡ ê¸°ëŠ¥ */
 	@RequestMapping("/regist.do")
 	public ModelAndView regist(){
 		
@@ -74,16 +72,16 @@ public class AdminController {
 		return mav;
 	}
 	
-	/* »óÇ° µî·ÏÇÏ±â */
+	/* ìƒí’ˆ ì •ë³´ ê¸°ì… ê¸°ëŠ¥ */
 	@RequestMapping("/insert.do")
-	public String insert(Product product, String[] panelsize_id, HttpServletRequest request){
+	public String insert(Product product, HttpServletRequest request){
 		
-		adminService.insert(product, panelsize_id, request);
+		adminService.insert(product, request);
 		
 		return "redirect:/admin/list.do";
 	}
 	
-	/* »óÇ° ¸®½ºÆ® */
+	/* ìƒí’ˆ ë¦¬ìŠ¤íŠ¸ í˜¸ì¶œ ê¸°ëŠ¥ */
 	@RequestMapping("/list.do")
 	public ModelAndView selectAll(@RequestParam(defaultValue = "") String keyword,HttpServletRequest request) throws Exception{
 		
@@ -115,70 +113,7 @@ public class AdminController {
 		return mav;
 	}
 	
-	/* ÀÌº¥Æ® ¸®½ºÆ® */
-/*	@RequestMapping("/event.do")
-	public ModelAndView event(HttpServletRequest request){
-		PagingBean pb = new PagingBean();
-		
-		ModelAndView mav = new ModelAndView();
-		// »óÇ° ÀüÃ¼ °¡Á®¿À±â
-		List list = adminService.selectAll();
-		mav.addObject("list", list);
-		
-		// ÀÌº¥Æ®Á¤º¸ °¡Á®¿À±â
-		List eventList = adminService.eventAll();
-		mav.addObject("eventList", eventList);
-		
-		String currentPage = (String) request.getAttribute("currentPage");
-		if(currentPage == null){
-			currentPage = "1";
-		}
-		
-		pb.init(Integer.parseInt(currentPage), list.size(), 10, 10);
-		mav.addObject("pb", pb);
-		
-		mav.setViewName("admin/event");
-		
-		return mav;
-	}*/
-	
-/*	 ÀÌº¥Æ® Á¤·Ä 
-	@RequestMapping("/eventSelect.do")
-	public ModelAndView eventSelect(int eventinfo_id, HttpServletRequest request){
-		ModelAndView mav = new ModelAndView();
-		PagingBean pb = new PagingBean();
-		List list = null;
-		
-		if(eventinfo_id == -1){ // ÀüÃ¼ Á¶È¸ ¼±ÅÃ
-			
-			// »óÇ° ÀüÃ¼ °¡Á®¿À±â
-			list = adminService.selectAll();
-			mav.addObject("list", list);
-			
-		}else{
-			list = adminService.eventSelect(eventinfo_id);
-			mav.addObject("list", list);
-			mav.addObject("event_id", eventinfo_id);
-		}
-		
-		// ÀÌº¥Æ®Á¤º¸ °¡Á®¿À±â
-		List eventList = adminService.eventAll();
-		mav.addObject("eventList", eventList);
-		
-		String currentPage = (String) request.getAttribute("currentPage");
-		if(currentPage == null){
-			currentPage = "1";
-		}
-		
-		pb.init(Integer.parseInt(currentPage), list.size(), 10, 10);
-		mav.addObject("pb", pb);
-		
-		mav.setViewName("admin/event");
-		
-		return mav;
-	}*/
-	
-	/* »óÇ° »èÁ¦ */
+	/* ìƒí’ˆ ì‚­ì œ ê¸°ëŠ¥ */
 	@RequestMapping("/delete.do")
 	public String productDelete(String[] product_id, String[] filename,HttpServletRequest request){
 		
@@ -187,8 +122,8 @@ public class AdminController {
 		return "redirect:/admin/list.do";
 	}
 	
-	/* ÀÌº¥Æ® Áßº¹µî·Ï ¿©ºÎ */
-	@RequestMapping("/duplicateEvent")
+	/* ì´ë²¤íŠ¸ìƒí’ˆ ë¯¸ê°œë°œ */
+	/*@RequestMapping("/duplicateEvent")
 	public ModelAndView duplicateEvent(HttpServletRequest request, int eventinfo_id){
 		ModelAndView mav = new ModelAndView();
 		
@@ -202,7 +137,6 @@ public class AdminController {
 	}
 	
 	
-	/* ÀÌº¥Æ® µî·Ï */
 	@RequestMapping("/eventRegist.do")
 	public String eventRegist(String[] product_id, String eventinfo_id){
 		
@@ -211,7 +145,6 @@ public class AdminController {
 		return "redirect:/admin/event.do";
 	}
 	
-	/* ÀÌº¥Æ® »èÁ¦ */
 	@RequestMapping("/eventDelete.do")
 	public String eventDelete(String[] product_id, int event_id){
 		
@@ -219,9 +152,9 @@ public class AdminController {
 		
 		
 		return "redirect:/admin/event.do";
-	}
+	}*/
 	
-	/* ¼­ºêÄ«Å×°í¸® ¾ò±â */
+	/* ì¹´í…Œê³ ë¦¬ í™œì„±í™” ê¸°ëŠ¥ */
 	@RequestMapping("/sub.do")
 	public ModelAndView subCategory(TopCategory topCategory) {
 		ModelAndView mav = new ModelAndView();
@@ -233,7 +166,7 @@ public class AdminController {
 		return mav;
 	}
 	
-	/* È¸¿øÀüÃ¼ ºÒ·¯¿À±â */
+	/* íšŒì› ë¦¬ìŠ¤íŠ¸ í˜¸ì¶œ ê¸°ëŠ¥ */
 	@RequestMapping("/member.do")
 	public ModelAndView allMember(){
 		ModelAndView mav = new ModelAndView();
@@ -246,7 +179,8 @@ public class AdminController {
 		return mav;
 	}
 	
-	/* °øÁö»çÇ× ÀüÃ¼ ºÒ·¯¿À±â */
+	
+	/* ê³µì§€ì‚¬í•­ ë¦¬ìŠ¤íŠ¸ í˜¸ì¶œ ê¸°ëŠ¥ */
 	@RequestMapping("/notice.do")
 	public ModelAndView notice(HttpServletRequest request){
 		ModelAndView mav = new ModelAndView();
@@ -269,7 +203,7 @@ public class AdminController {
 		return mav;
 	}
 	
-	/* °øÁö»çÇ× »ğÀÔÇÏ±â */
+	/* ê³µì§€ì‚¬í•­ ì…ë ¥ ê¸°ëŠ¥ */
 	@RequestMapping("/writenotice.do")
 	public String writeNotice(Notice notice){
 		
@@ -278,7 +212,7 @@ public class AdminController {
 		return "redirect:/admin/notice.do";
 	}
 	
-	/* °øÁö»çÇ× »ó¼¼º¸±â */
+	/* ê³µì§€ì‚¬í•­ ìƒì„¸ì •ë³´ ê¸°ëŠ¥ */
 	@RequestMapping("/notice_detail.do")
 	public ModelAndView detailNotice(int notice_id){
 		ModelAndView mav = new ModelAndView();
@@ -292,7 +226,7 @@ public class AdminController {
 		return mav;
 	}
 	
-	/* °øÁö»çÇ× »èÁ¦ÇÏ±â */
+	/* ê³µì§€ì‚¬í•­ ì‚­ì œ ê¸°ëŠ¥ */
 	@RequestMapping("/noticeDelete.do")
 	public String deleteNotice(int notice_id){
 		
@@ -301,7 +235,7 @@ public class AdminController {
 		return "redirect:/admin/notice.do";
 	}
 	
-	/* ¼öÁ¤ÆäÀÌÁö·Î ÀÌµ¿ */
+	/* ê³µì§€ì‚¬í•­ ìˆ˜ì • ê¸°ëŠ¥ */
 	@RequestMapping("/goedit.do")
 	public ModelAndView goEdit(int notice_id){
 		ModelAndView mav = new ModelAndView();
@@ -314,8 +248,7 @@ public class AdminController {
 		return mav;
 	}
 	
-	
-	/* °øÁö»çÇ× ¼öÁ¤ÇÏ±â */
+	/* ê³µì§€ì‚¬í•­ ìˆ˜ì • ê¸°ëŠ¥ */
 	@RequestMapping("/editnotice.do")
 	public String editNotice(Notice notice){
 		
@@ -324,8 +257,7 @@ public class AdminController {
 		return "redirect:/admin/notice.do";
 	}
 	
-	
-	/* ·Î±×ÀÎ ºÒ°¡ ¿¹¿Ü */ 
+	/* ë¹„ë¡œê·¸ì¸ì‹œ ì„¸ì…˜ ì—ëŸ¬ ë°œìƒ */
 	@ExceptionHandler(DoNotLoginException.class)
 	public ModelAndView doNotLogin(DoNotLoginException e){
 		
@@ -338,7 +270,7 @@ public class AdminController {
 		return mav;
 	}
 	
-	// »óÇ° ¼öÁ¤ »ó¼¼Á¤º¸
+	/* ìƒí’ˆ ì •ë³´ ìˆ˜ì • ë¦¬ìŠ¤íŠ¸ ê¸°ëŠ¥ */
 	@RequestMapping("view.do")
 	public String productView(String product_id, Model model)
 	{
@@ -352,13 +284,14 @@ public class AdminController {
 		return "admin/modify";
 	}
 	
+	/* ìƒí’ˆ ì •ë³´ ìˆ˜ì • ê¸°ëŠ¥ */
 	@RequestMapping("/modify.do")
-	public String productModify(Product product, String[] panelsize_id, HttpServletRequest request){
-		adminService.productModify(product, panelsize_id, request);
+	public String productModify(Product product, HttpServletRequest request){
+		adminService.productModify(product, request);
 		return "redirect:/admin/list.do";
 	}
 	
-	/* È¸¿ø ¸®½ºÆ® */
+	/* íšŒì› ë¦¬ìŠ¤íŠ¸ í˜¸ì¶œ ê¸°ëŠ¥ */
 	@RequestMapping("/mlist.do")
 	public ModelAndView selectAll2(HttpServletRequest request){
 		PagingBean pb = new PagingBean();
@@ -381,7 +314,7 @@ public class AdminController {
 		return mav;
 	}
 	
-	/* »óÇ° »èÁ¦ */
+	/* íšŒì› íƒˆí‡´ ê¸°ëŠ¥ */
 	@RequestMapping("/memberDelete.do")
 	public String memberDelete(String[] member_id, HttpServletRequest request){
 		
@@ -390,7 +323,7 @@ public class AdminController {
 		return "redirect:/admin/mlist.do";
 	}
 	
-	// »óÇ° ¼öÁ¤ »ó¼¼Á¤º¸
+	/* íšŒì› ì •ë³´ ë³€ê²½ ì •ë³´ í˜¸ì¶œ ê¸°ëŠ¥ */
 	@RequestMapping("/memberView.do")
 	public String memberView(String member_id, Model model)
 	{
@@ -399,6 +332,7 @@ public class AdminController {
 		return "admin/memberModify";
 	}
 	
+	/* íšŒì› ì •ë³´ ë³€ê²½ ê¸°ëŠ¥ */
 	@RequestMapping("/memberModify.do")
 	public String memberModify(Member member, HttpServletRequest request){
 		System.out.println(member.getMember_id());

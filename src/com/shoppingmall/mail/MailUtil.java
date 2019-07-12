@@ -11,7 +11,7 @@ public class MailUtil {
 		String hostSMTPpwd = "sa++1589";
 		
 		String fromEmail = "bg9292@naver.com";
-		String fromName = "(¡÷) æ»»ø»Ï";
+		String fromName = "ÏµúÎ≥ëÍ∑º";
 		
 		try
 		{

@@ -10,18 +10,16 @@ import javax.imageio.ImageIO;
 
 public class FileManager {
 	
-	// 확장자 추출하기
 	public static String getExtend(String path){
 		int lastIndex = path.lastIndexOf(".");
 				
 		return path.substring(lastIndex+1);
 	}
 	
-	// 썸네일 생성
 	public static void makeThumb(File file, String savePath, String realname, int product_id) throws IOException{
-		int xscale = 4;	// 가로비율
-		int yscale = 3;	// 세로비율
-		int size = 15;		// 사이즈
+		int xscale = 4;
+		int yscale = 3;
+		int size = 15;
 		int width = xscale*size;
 		int height = yscale*size;
 		String ext = getExtend(realname);

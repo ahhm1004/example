@@ -46,7 +46,6 @@ public class MemberController {
 
 	@RequestMapping("/registForm.do")
 	public String regist(Member member) {
-		System.out.println(tag + "ÇØÇØÇØ" + member.getName());
 		memberService.insert(member);
 
 		return "shopJSP/loginForm";
@@ -54,29 +53,27 @@ public class MemberController {
 
 	@RequestMapping("/checkId.do")
 	public ModelAndView checkId(Member member, HttpServletResponse httpServletResponse) {
-		System.out.println("¾îÀÌµğ´Â" + member.getId());
 		List list = memberService.selectId(member);
 		ModelAndView mav = new ModelAndView("shopJSP/checkLoginResult");
-		mav.addObject("msg", "»ç¿ë°¡´ÉÇÑ ¾ÆÀÌµğÀÔ´Ï´Ù");
+		mav.addObject("msg", "ì‚¬ìš© ê°€ëŠ¥í•œ ì•„ì´ë”” ì…ë‹ˆë‹¤.");
 		mav.addObject("result", "true");
 
 		return mav;
 	}
 
-	// ·Î±×ÀÎ ¾ÆÀÌµğ ºñ¹Ğ¹øÈ£ Ã¼Å©
+	// ë¡œê·¸ì¸ ì•„ì´ë”” ë¹„ë°€ë²ˆí˜¸ ì²´í¬
 	@RequestMapping("/loginCheck.do")
 	public ModelAndView checkLogin(HttpSession session, Member member) {
 		System.out.println(member.getId());
 		memberService.checkLogin(member);
 		ModelAndView mav = new ModelAndView("shopJSP/checkLoginResult");
 		session.setAttribute("id", member.getId());
-		mav.addObject("msg", "·Î±×ÀÎ ¼º°ø");
+		mav.addObject("msg", "ë¡œê·¸ì¸ ì„±ê³µ");
 		mav.addObject("result", "true");
 
 		return mav;
 	}
 
-	// ·Î±×ÀÎ ¾ÆÀÌµğ ºñ¹Ğ¹øÈ£°¡ Æ²·ÈÀ»¶§
 	@ExceptionHandler(DidNotCheckLoginException.class)
 	public ModelAndView handle(DidNotCheckLoginException e) {
 		ModelAndView mav = new ModelAndView("shopJSP/checkLoginResult");
@@ -86,14 +83,12 @@ public class MemberController {
 		return mav;
 	}
 
-	// ·Î±×¾Æ¿ô‰çÀ»‹š
 	@RequestMapping("/loginOut.do")
 	public String loginOut(HttpSession session) {
 		session.setAttribute("id", null);
 		return "shopJSP/index";
 	}
 
-	// ¸¶ÀÌÆäÀÌÁö Á¤º¸ °¡Á®¿À±â
 	@RequestMapping("/myPage.do")
 	public ModelAndView selectOne(HttpSession session) {
 		String id = (String) session.getAttribute("id");
@@ -125,13 +120,13 @@ public class MemberController {
 		String newPwd = MailUtil.getNewPwd();
 		memberService.changePwd(newPwd, id);
 		
-		String subject = "[AHH-FASHION] ÀÓ½Ã ºñ¹Ğ¹øÈ£ ¹ß±Ş ¾È³»";
+		String subject = "[AHH-FASHION] ì„ì‹œ ë¹„ë°€ë²ˆí˜¸ ë°œê¸‰ ì•ˆë‚´";
 		
 		String msg = "";
 		
 		msg += "<div align = 'center' style = 'border:1px solid black; font-family:verdana'>";
 		msg += "<h3 style = 'color: blue;'><strong>" + id;
-		msg += "<p>ÀÓ½Ã ºñ¹Ğ¹øÈ£ : <strong>" + newPwd + "</strong></p></div>";
+		msg += "<p>ï¿½Ó½ï¿½ ï¿½ï¿½Ğ¹ï¿½È£ : <strong>" + newPwd + "</strong></p></div>";
 		
 		MailUtil.sendMail(email, subject, msg);
 		

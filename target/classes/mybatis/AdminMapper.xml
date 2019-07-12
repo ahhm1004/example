@@ -13,14 +13,6 @@
 		select brand_id, name from brand order by brand_id asc
 	</select>
 	
-	<select id="nationList" resultType="Nation">
-		select nation_id, name from nation order by nation_id asc
-	</select>
-	
-	<select id="panelSizeList" resultType="PanelSize">
-		select panelsize_id, name from panelsize order by panelsize_id asc
-	</select>
-	
 	<select id="subCategoryList" resultType="SubCategory" parameterType="int">
 		select subcategory_id, name, topcategory_id from subcategory where topcategory_id=#{topCategory_id} 
 		order by subcategory_id
