@@ -11,6 +11,7 @@
 		<result property="discount" column="discount"/>
 		<result property="point" column="point"/>
 		<result property="filename" column="filename"/>
+		<result property="stock" column="stock"/>
 		<result property="regdate" column="regdate"/>
 		<result property="subcategory_id" column="subcategory_id"/>
 		<result property="brand_id" column="brand_id"/>
@@ -19,7 +20,7 @@
 	
 	<!-- 전부 불러오기 -->
 	<select id="selectAll" resultMap="ProductResult">
-		select p.product_id as product_id, product_name, price, discount, point,filename, detail, b.brand_id as brand_id,  subcategory_id, regdate, b.name as brand_name
+		select p.product_id as product_id, product_name, price, discount, point, stock ,filename, detail, b.brand_id as brand_id,  subcategory_id, regdate, b.name as brand_name
 		from product p, brand b
 		where p.brand_id = b.brand_id and p.product_name like '%'||#{keyword}||'%' or p.detail like '%'||#{keyword}||'%'
 		order by product_id desc
@@ -27,7 +28,7 @@
 	
 	
 		<!-- 상품 등록  Mysql-->
-	<insert id="insert" parameterType="Product">
+	<insert id="insert" parameterType="ProductStockHelper">
 		insert into product(product_name, price, discount, point, filename, detail, brand_id, subcategory_id)
 		values(#{product_name}, #{price}, #{discount}, #{point}, #{filename}, #{detail}, #{brand_id}, #{subcategory_id})
 		<selectKey keyProperty="product_id" order="AFTER" resultType="int">
@@ -42,7 +43,7 @@
 	
 	<!-- 한건 불러오기 -->
 	<select id="selectOne" parameterType="int" resultMap="ProductResult">
-		select p.product_id as product_id, product_name, price, discount, point, filename, detail, b.brand_id as brand_id,  subcategory_id, regdate, b.name as brand_name
+		select p.product_id as product_id, product_name, price, discount, point, stock, filename, detail, b.brand_id as brand_id,  subcategory_id, regdate, b.name as brand_name
 		from product p, brand b
 		where p.brand_id = b.brand_id and p.product_id=#{product_id}
 		order by product_id desc
@@ -84,4 +85,12 @@
 		where product_name like '%'||#{keyword}||'%'
 				or detail like '%'||#{keyword}||'%'
 	</select>
+	
+	<select id = "view2" resultType = "com.shoppingmall.product.model.Product">
+		select p.product_id as product_id, product_name, price, discount, point, filename, detail, b.brand_id as brand_id, p.subcategory_id, regdate, b.name as brand_name, su.name as subcategory_name, t.name as topcategory_name
+		from product p, brand b, subcategory su, topcategory t
+		where p.brand_id = b.brand_id and p.subcategory_id = su.subcategory_id and t.topcategory_id = (select su.topcategory_id from product p, subcategory su where p.subcategory_id = su.subcategory_id and p.product_id = #{product_id})  and p.product_id=#{product_id}
+	</select>
+	
+	
 </mapper>

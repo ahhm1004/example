@@ -15,6 +15,8 @@
 		<typeAlias type="com.shoppingmall.product.model.EventProduct" alias="EventProduct" />
 		<typeAlias type="com.shoppingmall.member.model.Member" alias="Member" />
 		<typeAlias type="com.shoppingmall.admin.model.Notice" alias="Notice" />
+		<typeAlias type="com.shoppingmall.product.model.ProductStock" alias="ProductStock" />		
+		<typeAlias type="com.shoppingmall.product.model.ProductStockHelper" alias="ProductStockHelper" />			
 		
 	</typeAliases>
 	<mappers>
@@ -28,6 +30,7 @@
 		<mapper resource="mybatis/EventInfoMapper.xml" />
 		<mapper resource="mybatis/EventProductMapper.xml" />
 		<mapper resource="mybatis/MemberMapper.xml" />
-		<mapper resource="mybatis/NoticeMapper.xml" />	
+		<mapper resource="mybatis/NoticeMapper.xml" />
+		<mapper resource="mybatis/ProductStockMapper.xml" />	
 	</mappers>
 </configuration>

@@ -25,10 +25,10 @@ import com.shoppingmall.product.model.BrandDAO;
 import com.shoppingmall.product.model.EventInfoDAO;
 import com.shoppingmall.product.model.EventProduct;
 import com.shoppingmall.product.model.EventProductDAO;
-import com.shoppingmall.product.model.NationDAO;
-import com.shoppingmall.product.model.PanelSizeDAO;
 import com.shoppingmall.product.model.Product;
 import com.shoppingmall.product.model.ProductDAO;
+import com.shoppingmall.product.model.ProductStock;
+import com.shoppingmall.product.model.ProductStockDAO;
 import com.shoppingmall.product.model.SubCategoryDAO;
 import com.shoppingmall.product.model.TopCategoryDAO;
 
@@ -46,10 +46,6 @@ public class AdminServiceImpl implements AdminService{
 	@Autowired
 	@Qualifier("brandDAOImpl")
 	private BrandDAO brandDAO;
-	
-	@Autowired
-	@Qualifier("nationDAOImpl")
-	private NationDAO nationDAO;
 	
 	@Autowired
 	@Qualifier("subCategoryDAOImpl")
@@ -79,13 +75,17 @@ public class AdminServiceImpl implements AdminService{
 	@Qualifier("noticeDAOImpl")
 	private NoticeDAO noticeDAO;
 	
+	@Autowired
+	@Qualifier("productStockDAOImpl")
+	private ProductStockDAO productStockDAO;
+	
 	
 	@Override
 	public void login(Admin admin, HttpSession session) throws DoNotLoginException{
 		
 		Admin result = adminDAO.select(admin);
 		if(result == null){
-			throw new DoNotLoginException("���̵�,�н����带 Ȯ�����ּ���.");
+			throw new DoNotLoginException("로그인에 실패하였습니다..");
 		}
 		session.setAttribute("admin", result);
 	}
@@ -131,7 +131,6 @@ public class AdminServiceImpl implements AdminService{
 		
 		product.setFilename(realname);
 		int product_id = productDAO.insert(product);
-				
 				
 		String fullname = savePath+product_id+"."+ext;
 		
@@ -358,4 +357,26 @@ public class AdminServiceImpl implements AdminService{
 	{
 		return productDAO.countArticle(keyword);
 	}
+	
+	@Override
+	public Product viewProduct2(String product_id)
+	{
+		return productDAO.viewProduct2(product_id);
+	}
+	
+	
+	@Override
+	public Product registProductStock(int product_id)
+	{
+		return productDAO.selectAll2(product_id); 
+	}
+	 
+	@Override
+	public void stockInsert(int product_id, String color, int stock, String size)
+	{
+		productStockDAO.insertProductStock(product_id, color, stock, size);
+	}
+	 
+	
+
 }

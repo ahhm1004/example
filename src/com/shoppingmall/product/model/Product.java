@@ -16,13 +16,28 @@ public class Product {
 	private String filename;
 	private String detail;
 	private String regdate;
+	private String stock;
 	private int subcategory_id;
 	private String subcategory_name;
 	private String topcategory_name;
 	private int brand_id;
 	private String brand_name;
+	private int sizeReal;
 	MultipartFile myFile;
 	
+	
+	public String getStock() {
+		return stock;
+	}
+	public void setStock(String stock) {
+		this.stock = stock;
+	}
+	public int getSizeReal() {
+		return sizeReal;
+	}
+	public void setSizeReal(int sizeReal) {
+		this.sizeReal = sizeReal;
+	}
 	public String getSubcategory_name() {
 		return subcategory_name;
 	}

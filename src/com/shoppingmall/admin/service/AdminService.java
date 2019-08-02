@@ -10,23 +10,20 @@ import com.shoppingmall.admin.model.Admin;
 import com.shoppingmall.admin.model.Notice;
 import com.shoppingmall.member.model.Member;
 import com.shoppingmall.product.model.Product;
+import com.shoppingmall.product.model.ProductStock;
 
 public interface AdminService {
 
 	public void login(Admin admin, HttpSession session);
 	
-
 	public void logout(HttpSession session);
 	
-
 	public Map registProduct();
 	
-
 	public void insert(Product product, HttpServletRequest request);
 	
 	public List getSubCategory(int topCategory_id);
 	
-
 	public List<Product> selectAll(String keyword);
 		
 	public List eventAll();
@@ -66,6 +63,12 @@ public interface AdminService {
 	public void memberModify(Member member, HttpServletRequest request);
 	
 	public int countArticle(String keyword) throws Exception;
+	
+	public Product viewProduct2(String product_id);
+	
+	public Product registProductStock(int product_id);
+	
+	public void stockInsert(int product_id, String color, int stock, String size);
 	
 	
 }

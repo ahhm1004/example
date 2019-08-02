@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ProductStock">
+
+ 	<!--  <select id="selectAll" resultType="ProductStock">
+		select p.product_name, p.price, ps.size, ps.color, ps.stock
+		from productstock ps, product p 
+		order by p.product_id desc
+	</select>-->
+	
+	<resultMap type="ProductStock" id="ProductStockResult">
+		<id property="productstock_id" column="productstock_id"/>
+		<result property="size" column="size"/>
+		<result property="color" column="color"/>
+		<result property="stock" column="stock"/>
+		<result property="product_id" column="product_id"/>
+	</resultMap>
+
+	<insert id="insert" parameterType="ProductStock">
+		insert into productstock(size, color, stock, product_id)
+		values(#{size}, #{color}, #{stock}, #{product_id})
+	</insert>
+
+</mapper>

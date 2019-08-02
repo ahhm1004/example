@@ -34,6 +34,7 @@ public class ProductDAOImpl implements ProductDAO{
 		List list = sqlSessionTemplate.selectList("Product.selectAll", map);
 		
 		return list;
+	}
 
 	@Override
 	public int update(Product product) {
@@ -82,5 +83,19 @@ public class ProductDAOImpl implements ProductDAO{
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("keyword", keyword);
 		return sqlSessionTemplate.selectOne("Product.countArticle", map);
+	}
+	
+	@Override
+	public Product viewProduct2(String product_id)
+	{
+		
+		return sqlSessionTemplate.selectOne("Product.view2", product_id);
+	}
+	
+	@Override
+	public Product selectAll2(int product_id)
+	{
+		Product product = (Product)sqlSessionTemplate.selectOne("Product.selectOne", product_id);
+		return product;
 	}
 }

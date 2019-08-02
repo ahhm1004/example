@@ -1,4 +1,4 @@
-<%@page import="common.page.PagingBean"%>
+-<%@page import="common.page.PagingBean"%>
 <%@page import="common.file.FileManager"%>
 <%@page import="com.shoppingmall.product.model.Product"%>
 <%@page import="com.shoppingmall.product.model.Brand"%>
@@ -20,7 +20,7 @@
 <script src="//cdn.ckeditor.com/4.5.9/standard/ckeditor.js"></script>
 <script src="../jslib/common.js"></script>
 <script>
-	function del(){
+	function add(){
 		
 		var chkcount = 0;
 		// 상품체크여부확인
@@ -31,39 +31,21 @@
 		}
 		
 		if(chkcount == 0){
-			alert("삭제할 상품을 선택해 주세요.");
+			alert("재고를 추가 할 상품을 선택해 주세요.");
 			return;
 		}
 		
-		if(!confirm('삭제하시겠습니까?')){
+		if(chkcount >= 2)
+		{
+			alert("하나의 상품만 선택해 주세요.");
 			return;
 		}
 		
-		productForm.action = "/admin/delete.do";
-		productForm.method="post";
-		productForm.submit();
-	}
-	
-	function mod(){
-		
-		var chkcount = 0;
-		// 상품체크여부확인
-		for(var i = 0; i < productForm.product_id.length; i++){
-			if(productForm.product_id[i].checked){
-				chkcount++;
-			}
-		}
-		
-		if(chkcount == 0){
-			alert("수정할 상품을 선택해 주세요.");
+		if(!confirm('추가하시겠습니까?')){
 			return;
 		}
 		
-		if(!confirm('수정하시겠습니까?')){
-			return;
-		}
-		
-		productForm.action = "/admin/view.do";
+		productForm.action = "/admin/stockRegist.do";
 		productForm.method="post";
 		productForm.submit();
 	}
@@ -80,7 +62,7 @@
 	<!-- 본문영역 -->
 	<div class="container">
 		<h2>상품 목록</h2>
-		<form name="form1" method = "post" action = "/admin/list.do">
+		<form name="form1" method = "post" action = "/admin/list2.do">
 			<input name = "keyword" value = "${map.keyword }">
 			<input type = "submit" value = "조회">
 		</form>
@@ -132,8 +114,7 @@
 			</table>
 			<!-- 삭제버튼 -->
 			<div>
-				<input type="button" class="btn btn-default" value="삭제" onClick="del()">
-				<input type = "button" class="btn btn-default" value = "수정" onClick = "mod()">
+				<input type = "button" class="btn btn-default" value = "재고 추가" onClick = "add()">
 			</div>
 		</div>
 		<!-- 페이징 -->
@@ -147,7 +128,7 @@
 	            	%>
 	            <li>
 	            <%if(firstPage-1 > 1){ %>
-	            	<a href="/admin/list.do?currentPage=<%=firstPage-1%>">
+	            	<a href="/admin/list2.do?currentPage=<%=firstPage-1%>">
 	            <%}else{ %>
 	            	<a href="javascript:alert('첫번째 페이지 입니다!!')">
 	            <%} %>
@@ -160,12 +141,12 @@
 	            		<%}else{ %>
 	            			<li>
 	            		<%} %>
-	            		<a href="/admin/list.do?currentPage=<%=i%>"><%=i %></a></li>
+	            		<a href="/admin/list2.do?currentPage=<%=i%>"><%=i %></a></li>
 	            	<%} %>
 	            
 	            <li>
 	            	<%if(lastPage+1 < totalPage){ %>
-	            		<a href="/admin/list.do?currentPage=<%=lastPage+1%>">
+	            		<a href="/admin/list2.do?currentPage=<%=lastPage+1%>">
 	            	<%}else{ %>
 	            		<a href="javascript:alert('마지막 페이지 입니다!!')">
 	            	<%} %>

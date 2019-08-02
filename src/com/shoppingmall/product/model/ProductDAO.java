@@ -20,4 +20,8 @@ public interface ProductDAO {
 	
 	public int countArticle(String keyword) throws Exception;
 	
+	public Product viewProduct2(String product_id);
+	
+	public Product selectAll2(int product_id);
+	
 }
