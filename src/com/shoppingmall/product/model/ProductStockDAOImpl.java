@@ -40,4 +40,24 @@ public class ProductStockDAOImpl implements ProductStockDAO{
 			System.out.println("중복되는 색 또는 사이즈를 넣었습니다.");
 		}
 	}
+	
+	@Override
+	public List select(int product_id)
+	{
+		List list = sqlSessionTemplate.selectList("ProductStock.select", product_id);
+		
+		return list;
+	}
+	
+	@Override
+	public void updateProductStock(int product_id, String color, int stock, String size)
+	{		
+		ProductStock productStock = new ProductStock();
+		productStock.setColor(color);
+		productStock.setProduct_id(product_id);
+		productStock.setSize(size);
+		productStock.setStock(stock);
+		
+		sqlSessionTemplate.update("ProductStock.update", productStock);
+	}
 }

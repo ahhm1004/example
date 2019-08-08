@@ -22,5 +22,18 @@
 		insert into productstock(size, color, stock, product_id)
 		values(#{size}, #{color}, #{stock}, #{product_id})
 	</insert>
+	
+	<select id="select" resultType="ProductStock">
+		select * from productstock where product_id = #{product_id} order by productstock_id desc
+	</select>
+	
+	<update id="update" parameterType="ProductStock">
+		update productstock
+		set
+			stock = #{stock}
+		where 
+			product_id = #{product_id} and size = #{size} and color = #{color}
+	
+	</update>
 
 </mapper>

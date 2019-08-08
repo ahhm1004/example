@@ -49,6 +49,36 @@
 		productForm.method="post";
 		productForm.submit();
 	}
+	
+	function update(){
+		
+		var chkcount = 0;
+		// 상품체크여부확인
+		for(var i = 0; i < productForm.product_id.length; i++){
+			if(productForm.product_id[i].checked){
+				chkcount++;
+			}
+		}
+		
+		if(chkcount == 0){
+			alert("재고를 추가 할 상품을 선택해 주세요.");
+			return;
+		}
+		
+		if(chkcount >= 2)
+		{
+			alert("하나의 상품만 선택해 주세요.");
+			return;
+		}
+		
+		if(!confirm('추가하시겠습니까?')){
+			return;
+		}
+		
+		productForm.action = "/admin/stockUpdate.do";
+		productForm.method="post";
+		productForm.submit();
+	}	
 </script>
 </head>
 
@@ -112,9 +142,10 @@
 				</tbody>
 				</form>
 			</table>
-			<!-- 삭제버튼 -->
+			<!-- 재고 추가/수정 버튼 -->
 			<div>
 				<input type = "button" class="btn btn-default" value = "재고 추가" onClick = "add()">
+				<input type = "button" class="btn btn-default" value = "재고 변경" onClick = "update()">
 			</div>
 		</div>
 		<!-- 페이징 -->

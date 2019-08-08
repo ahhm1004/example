@@ -70,5 +70,9 @@ public interface AdminService {
 	
 	public void stockInsert(int product_id, String color, int stock, String size);
 	
+	public List selectProductStock(int product_id);
+	
+	public void stockUpdate(int product_id, String color, int stock, String size);
+	
 	
 }

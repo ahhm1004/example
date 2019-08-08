@@ -1,10 +1,12 @@
+<%@page import="com.shoppingmall.product.model.ProductStock"%>
 <%@page import="com.shoppingmall.product.model.Product"%>
 <%@page import="java.util.List"%>
 <%@page import="java.util.Map"%>
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%
 	Product product = (Product)request.getAttribute("product");
-
+	String[][] stockKind = (String[][])request.getAttribute("stockKind");
+	int stockNumColor = (int)request.getAttribute("stockNumColor");
 %>
 <!DOCTYPE html>
 <html>
@@ -18,7 +20,7 @@
 	<script>
 	
 		// 상품등록하기
-		function stockInsert(){
+		function stockUpdate(){
 			
 			// 숫자만 입력 여부 검사.
 			//var notNum = numChk();
@@ -26,8 +28,7 @@
 			//	return;
 			//}
 			
-			
-			registForm.action="/admin/stockInsert.do";
+			registForm.action="/admin/stockModify.do";
 			registForm.method="post";
 			registForm.encoding="multipart/form-data";
 			registForm.submit();			
@@ -61,28 +62,14 @@
 	<!-- 본문영역 -->
 	<div class="container">
 		<h1 align="center">상품정보변경</h1>
-		<form class="form-horizontal" role="form" name="registForm">
-			<div class="form-group">
-				<label class="col-sm-2 control-label">상품번호</label>
-				<div class="col-sm-2">
-					<input class="form-control" name="product_id" type="text" value="${product.getProduct_id() }" >
-				</div>
-			</div>				
+		<form class="form-horizontal" role="form" name="registForm">			
 			<div class="form-group">
 				<label class="col-sm-2 control-label">상품명</label>
 				<div class="col-sm-3">
 					<input class="form-control" name="product_name" type="text" value="${product.getProduct_name() }">
+					<input class="fomr-control" name="product_id" type="hidden" value="${product.getProduct_id()}">
 				</div>
 			</div>
-			<div class="form-group">
-				<label class="col-sm-2 control-label">색상</label>
-				<div class="col-sm-3">
-					<input class="form-control" name="color" type="text" value="">
-				</div>
-			</div>
-			
-			
-			
 			<div class="form-group">
 				<label class="col-sm-2 control-label">사이즈</label>
 				<div class="col-sm-1">
@@ -104,35 +91,36 @@
 					<input class="form-control" name="sizeName_free" type="text" value="Free" style = "text-align:center;" readonly>
 				</div>								
 			</div>
-						
+			<%for(int i = 0;i<stockNumColor; i++){ %>
 			<div class="form-group">
-				<label class="col-sm-2 control-label">개수</label>
+				<label class="col-sm-2 control-label"><%=stockKind[i][0] %></label>
 				<div class="col-sm-1">
-					<input class="form-control" name="size_s" type="text" value="0">
+					<input class="hidden" name="color" type="text" value="<%=stockKind[i][0] %>">
+					<input class="form-control" name="size_s" type="text" value="<%=stockKind[i][1] %>">
 				</div>
 				<div class="col-sm-1">
-					<input class="form-control" name="size_m" type="text" value="0">
+					<input class="form-control" name="size_m" type="text" value="<%=stockKind[i][2] %>">
 				</div>
 				<div class="col-sm-1">
-					<input class="form-control" name="size_l" type="text" value="0">
+					<input class="form-control" name="size_l" type="text" value="<%=stockKind[i][3] %>">
 				</div>
 				<div class="col-sm-1">
-					<input class="form-control" name="size_xl" type="text" value="0">
+					<input class="form-control" name="size_xl" type="text" value="<%=stockKind[i][4] %>">
 				</div>
 				<div class="col-sm-1">
-					<input class="form-control" name="size_xxl" type="text" value="0">
+					<input class="form-control" name="size_xxl" type="text" value="<%=stockKind[i][5] %>">
 				</div>
 				<div class="col-sm-1">
-					<input class="form-control" name="size_free" type="text" value="0">
+					<input class="form-control" name="size_free" type="text" value="<%=stockKind[i][6] %>">
 				</div>								
 			</div>
+			<%} %>
 											
-			
-			
+
 			<div class="form-group">
 				<label class="col-sm-2 control-label"></label>
 				<div class="col-sm-10">
-					<input type="button" class="btn btn-success" value="재고 추가하기" onClick="stockInsert()">
+					<input type="button" class="btn btn-success" value="재고 추가하기" onClick="stockUpdate()">
 				</div>
 			</div>
 		</form>

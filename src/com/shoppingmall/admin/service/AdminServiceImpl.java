@@ -377,6 +377,18 @@ public class AdminServiceImpl implements AdminService{
 		productStockDAO.insertProductStock(product_id, color, stock, size);
 	}
 	 
+	@Override
+	public List selectProductStock(int product_id)
+	{
+		List productStockList = productStockDAO.select(product_id);
+		
+		return productStockList;
+	}
 	
+	@Override
+	public void stockUpdate(int product_id, String color, int stock, String size)
+	{
+		productStockDAO.updateProductStock(product_id, color, stock, size);
+	}
 
 }

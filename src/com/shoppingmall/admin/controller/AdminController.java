@@ -337,7 +337,6 @@ public class AdminController {
 	@RequestMapping("/list2.do")
 	public ModelAndView selectAll2(@RequestParam(defaultValue = "") String keyword, HttpServletRequest request)
 			throws Exception {
-		;
 		int count = adminService.countArticle(keyword);
 
 		PagingBean pb = new PagingBean();
@@ -377,25 +376,143 @@ public class AdminController {
 		mav.addObject("product", product);
 
 		mav.setViewName("admin/stockRegist");
- 
+
 		return mav;
 	}
 
 	/* 상품 재고 기입 기능 */
 	@RequestMapping("/stockInsert.do")
-	public String stockInsert(ProductStockHelper productStockHelper, HttpServletRequest request){
-		 System.out.println(productStockHelper.getColor());
-		 int stock[] = {productStockHelper.getSize_s(),productStockHelper.getSize_m(),productStockHelper.getSize_l(),productStockHelper.getSize_xl(),productStockHelper.getSize_xxl(),productStockHelper.getSize_free()};
-		 String size[] = {"s","m","l","xl","xxl","free"};
-		 for(int i=0;i<size.length;i++)
-		 {
-		 	if(stock[i] !=0 )
-		 	{
-		 		adminService.stockInsert(productStockHelper.getProduct_id(),productStockHelper.getColor(),stock[i],size[i]);
-		 	}
-		 }
-		 return "redirect:/admin/list.do"; 
+	public String stockInsert(ProductStockHelper productStockHelper, HttpServletRequest request) {
+		int stock[] = { productStockHelper.getSize_s(), productStockHelper.getSize_m(), productStockHelper.getSize_l(),
+				productStockHelper.getSize_xl(), productStockHelper.getSize_xxl(), productStockHelper.getSize_free() };
+		String size[] = { "s", "m", "l", "xl", "xxl", "free" };
+		for (int i = 0; i < size.length; i++) {
+			adminService.stockInsert(productStockHelper.getProduct_id(), productStockHelper.getColor(), stock[i],
+					size[i]);
+		}
+		return "redirect:/admin/list2.do";
 	}
-	 
 
+	/* 상품 재고 등록,수정 리스트 호출 기능 */
+	@RequestMapping("/stockUpdate.do")
+	public ModelAndView productStockUpdate(int product_id) {
+		Product product = adminService.registProductStock(product_id);
+		List<ProductStock> productStockList = adminService.selectProductStock(product_id);
+
+		ModelAndView mav = new ModelAndView();
+
+
+		// 재고 색상 개수 파악용
+		int stockNumColor = 1;
+		String stockColorCheck = productStockList.get(0).getColor();
+
+		for (int i = 1; i < productStockList.size(); i++) {
+			if (!stockColorCheck.equals(productStockList.get(i).getColor())) {
+				stockNumColor++;
+				stockColorCheck = productStockList.get(i).getColor();
+			}
+		}
+		
+		//재고 관련 배열 색상 파악
+		String[][] stockKind = new String[stockNumColor][7]; 
+		stockKind[0][0] = productStockList.get(0).getColor();
+		int checking = 0;
+		for(int i=1;i<productStockList.size();i++)
+		{
+			if(!stockKind[checking][0].equals(productStockList.get(i).getColor()))
+			{
+				checking++;
+				stockKind[checking][0] = productStockList.get(i).getColor();
+			}
+		}
+		
+		//2차원 배열 재고 추가
+		for(int i=0;i<productStockList.size();i++)
+		{	
+			for(int j=0; j<stockKind.length; j++)
+			{
+				if(stockKind[j][0].equals(productStockList.get(i).getColor()))
+				{
+					if(productStockList.get(i).getSize().equals("s"))
+					{
+						stockKind[j][1] = Integer.toString(productStockList.get(i).getStock());
+					}
+					else if(productStockList.get(i).getSize().equals("m"))
+					{
+						stockKind[j][2] = Integer.toString(productStockList.get(i).getStock());
+					}
+					else if(productStockList.get(i).getSize().equals("l"))
+					{
+						stockKind[j][3] = Integer.toString(productStockList.get(i).getStock());
+					}
+					else if(productStockList.get(i).getSize().equals("xl"))
+					{
+						stockKind[j][4] = Integer.toString(productStockList.get(i).getStock());
+					}
+					else if(productStockList.get(i).getSize().equals("xxl"))
+					{
+						stockKind[j][5] = Integer.toString(productStockList.get(i).getStock());
+					}
+					else if(productStockList.get(i).getSize().equals("free"))
+					{
+						stockKind[j][6] = Integer.toString(productStockList.get(i).getStock());
+					}
+				}
+			}
+		}
+
+		
+		mav.addObject("product", product);
+		mav.addObject("stockKind", stockKind);
+		mav.addObject("stockNumColor", stockNumColor);
+
+		mav.setViewName("admin/stockUpdate");
+
+		return mav;
+	}
+	
+	/* 상품 재고 변경 기능 */
+	@RequestMapping("/stockModify.do")
+	public String stockModify(String color, String size_s, String size_m, String size_l, String size_xl,String size_xxl,String size_free, int product_id, HttpServletRequest request) {
+		int count = 0;
+		
+		for(int i=0;i<color.length();i++)
+		{
+			if(color.charAt(i)==',')
+				count++;
+		}
+		
+		String[] colorKind = color.split(",");
+		String[] size_sKind = size_s.split(",");
+		String[] size_mKind = size_m.split(",");
+		String[] size_lKind = size_l.split(",");
+		String[] size_xlKind = size_xl.split(",");
+		String[] size_xxlKind = size_xxl.split(",");
+		String[] size_freeKind = size_free.split(",");
+		
+		String[][] stock = new String[colorKind.length][7];
+		
+		for(int i=0; i<colorKind.length; i++)
+		{
+			stock[i][0] = colorKind[i];
+			stock[i][1] = size_sKind[i];
+			stock[i][2] = size_mKind[i];
+			stock[i][3] = size_lKind[i];
+			stock[i][4] = size_xlKind[i];
+			stock[i][5] = size_xxlKind[i];
+			stock[i][6] = size_freeKind[i];
+		}
+		
+		String[] size = {"s","m","l","xl","xxl","free"};
+		
+		
+		for (int i = 0; i < colorKind.length; i++) {
+			for(int j=1; j < 7; j++)
+			{
+				adminService.stockUpdate(product_id, stock[i][0], Integer.parseInt(stock[i][j]), size[j-1]);
+			}
+		}
+		
+		return "redirect:/admin/list2.do";
+	}
 }
