@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Member">
+	<insert id="insert" parameterType="Member">
+		insert into
+		member(id, pwd, email, zipcode, addr, name,birthday,phone,point,level_id,telephone,memberletter_id,gender)
+		values(
+
+		#{id,jdbcType=INTEGER},
+		#{pwd,jdbcType=VARCHAR},
+		#{email,jdbcType=VARCHAR},
+		#{zipcode,jdbcType=VARCHAR},
+		#{addr,jdbcType=VARCHAR},
+		#{name,jdbcType=VARCHAR},
+		#{birthday,jdbcType=VARCHAR},
+		#{phone,jdbcType=VARCHAR},
+		#{point,jdbcType=INTEGER },
+		#{level_id,jdbcType=INTEGER },
+		#{telephone,jdbcType=VARCHAR},
+		#{memberletter_id,jdbcType=INTEGER},
+		#{gender,jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="selectId" resultType="Member">
+		select id from member where
+		id=#{id}
+	</select>
+	
+	<select id="checkLogin" resultType="Member" parameterType="Member">
+		select id from member where id=#{id} and pwd=#{pwd}
+	</select>
+	
+	<select id="selectOne" resultType="Member" parameterType="string">
+		select * from member where id=#{id}
+	</select>
+	
+	<select id="selectAll" resultType="Member">
+		select * from member order by member_id desc
+	</select>
+	
+		<!-- 상품삭제 -->
+	<delete id="delete" parameterType="int">
+		delete from member where member_id=#{member_id}
+	</delete>
+	
+	<select id = "view" resultType = "Member">
+		select member_id, id, pwd, email, zipcode, addr, name, birthday, phone, point, level_id, telephone, gender
+		from member
+		where member_id=#{member_id}
+	</select>
+	
+	<update id = "update" parameterType="Member">
+		update member
+		set   
+			id = #{id},
+			pwd = #{pwd},
+			email = #{email},
+			zipcode = #{zipcode},
+			addr = #{addr},
+			name = #{name},
+			birthday = #{birthday},
+			phone = #{phone},
+			point = #{point},
+			level_id = #{level_id},
+			telephone = #{telephone},
+			gender = #{gender}
+		where 
+			member_id = #{member_id}
+	</update>
+	
+	<select id = "findId" resultType = "Member">
+		select 
+			id
+		from 
+			member
+		where 
+			name = #{name} and birthday = #{birthday} and phone = #{phone}
+	</select>
+
+	<update id = "changePwd">
+		update
+			member
+		set
+			pwd = #{pwd}
+		where
+			id = #{id}	
+	</update>
+</mapper>
+
+ 
